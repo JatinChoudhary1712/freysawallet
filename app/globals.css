@@ -1,0 +1,243 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #2d1b4d 100%);
+  min-height: 100vh;
+  color: #ffffff;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%, rgba(45, 27, 77, 0.3) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.connect-wallet-btn {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d1b4d 50%, #4b2d7d 100%);
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid #6b3d9c;
+  box-shadow: 0 0 15px rgba(107, 61, 156, 0.3),
+              inset 0 0 10px rgba(107, 61, 156, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+/* Fast shine animation - 1.5 seconds */
+.connect-wallet-btn.shine-fast::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shine 1.5s infinite;
+}
+
+/* Normal shine animation - 3 seconds */
+.connect-wallet-btn.shine-normal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shine 3s infinite;
+}
+
+/* Slow shine animation - 5 seconds */
+.connect-wallet-btn.shine-slow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shine 5s infinite;
+}
+
+/* Very slow shine animation - 8 seconds */
+.connect-wallet-btn.shine-very-slow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shine 8s infinite;
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.connect-wallet-btn:hover {
+  background: linear-gradient(135deg, #2d1b4d 0%, #4b2d7d 50%, #6b3d9c 100%);
+  border-color: #8a4ec9;
+  box-shadow: 0 0 20px rgba(107, 61, 156, 0.4),
+              inset 0 0 15px rgba(107, 61, 156, 0.3);
+  transform: translateY(-1px);
+  transition: all 0.3s ease;
+}
+
+.wallet-dropdown {
+  background: linear-gradient(180deg, #1a1a1a 0%, #1f1f1f 100%);
+  border: 1px solid #333;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+}
+
+.wallet-divider {
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%,
+    #4b2d7d 50%,
+    transparent 100%
+  );
+  margin: 8px 12px;
+  border-radius: 1px;
+  opacity: 0.5;
+}
+
+.wallet-dropdown-item {
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.wallet-dropdown-item:hover {
+  background: linear-gradient(90deg, #2d1b4d 0%, #372359 100%);
+  box-shadow: 0 0 15px rgba(107, 61, 156, 0.2);
+}
+
+.wallet-icon-container {
+  background: linear-gradient(135deg, #2d1b4d 0%, #372359 100%);
+  box-shadow: 0 0 10px rgba(107, 61, 156, 0.2);
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --border: 0 0% 20%;
+    --accent: 270 50% 20%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Chat Portal Styles */
+.chat-messages::-webkit-scrollbar {
+  width: 5px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.chat-messages {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.message-input {
+  background: linear-gradient(135deg, #2d1b4d 0%, #372359 100%);
+  box-shadow: inset 0 0 10px rgba(107, 61, 156, 0.2);
+}
+
+.message-input:focus {
+  box-shadow: 0 0 15px rgba(107, 61, 156, 0.3),
+              inset 0 0 10px rgba(107, 61, 156, 0.2);
+}
+
+.shine-wrapper {
+  position: relative;
+  width: fit-content;
+  overflow: hidden;
+}
+
+.shine-wrapper img {
+  display: block;
+}
+
+.shine-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  width: 150%;
+  height: 150%;
+  top: -25%;
+  left: -25%;
+  transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  animation: shine-diagonal 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes shine-diagonal {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  50%, 100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}

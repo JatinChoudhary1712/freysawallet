@@ -12,6 +12,7 @@ import { Stats } from "./Chat/Stats";
 import { getGameState, TGameState } from "@/actions/getGameState";
 import { getPrizePool } from "@/actions/getPrizePool";
 import Image from "next/image";
+import { useSession as useNextAuthSession } from 'next-auth/react';
 
 type TProps = {
   messages: TMessage[];
@@ -24,7 +25,8 @@ export const Main = (props: TProps) => {
   const [gameState, setGameState] = useState<TGameState>(props.gameState);
   const [selectedMessage, setSelectedMessage] = useState<TMessage | null>(null);
   const [showOnlyUserMessages, setShowOnlyUserMessages] = useState(false);
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
+  const { data: session, status } = useNextAuthSession();
 
   const queryNewMessages = useCallback(async () => {
     const newMessages = await getRecentMessages(
@@ -61,8 +63,70 @@ export const Main = (props: TProps) => {
     fetchPrizeFund();
   }, []);
 
+  // Add this useEffect to log whenever session or status changes
+  useEffect(() => {
+    console.log('Session Status:', status);
+    console.log('Session Data:', session);
+    console.log('Wallet Connected:', isConnected);
+    console.log('Wallet Address:', address);
+  }, [session, status, isConnected, address]);
+
+  const verifyToken = async () => {
+    try {
+      // Method 1: Check session endpoint
+      const sessionResponse = await fetch('/api/auth/session');
+      const sessionData = await sessionResponse.json();
+
+      // Method 2: Check cookies
+      const cookies = document.cookie;
+
+      // Method 3: Check session object
+      const currentSession = session;
+
+      // Log all authentication data
+      console.log('=== Authentication Data ===');
+      console.log('1. Session Status:', status);
+      console.log('2. Connected Address:', address);
+      console.log('3. Session Data:', sessionData);
+      console.log('4. Cookies:', cookies);
+      console.log('5. Current Session:', currentSession);
+
+      // Try to use the token
+      const testResponse = await fetch('/api/auth/session', {
+        headers: {
+          'Authorization': `Bearer ${sessionData.token.jti}`
+        }
+      });
+      console.log('6. Test Response:', await testResponse.json());
+
+    } catch (error) {
+      console.error('Verification Error:', error);
+    }
+  };
+
   return (
     <div className="h-screen flex flex-col overflow-hidden">
+      <div className="p-4 space-y-2">
+        <div className="mb-4 space-y-2">
+          <p>Status: {status}</p>
+          <p>Wallet: {address}</p>
+          <button 
+            onClick={verifyToken}
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Verify Authentication
+          </button>
+        </div>
+
+        <button 
+          onClick={verifyToken}
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+          disabled={!isConnected}
+        >
+          Verify Authentication
+        </button>
+      </div>
+
       {/* Main Content */}
       <Header gameState={gameState} prizeFund={prizeFund ?? 0} />
       <div className="flex-1 flex overflow-hidden">
@@ -79,14 +143,7 @@ export const Main = (props: TProps) => {
         >
           <HowItWorks />
 
-          <Stats
-            totalParticipants={gameState.uniqueWallets}
-            totalMessages={gameState.messagesCount}
-            prizeFund={prizeFund ?? 0}
-            endgameTime={gameState.endgameTime}
-            className="mt-8"
-            isGameEnded={gameState.isGameEnded}
-          />
+          
         </motion.div>
 
         {/* Center Column */}
